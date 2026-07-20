@@ -1,79 +1,80 @@
-# Neovim C/C++ 开发配置
+# Portable Neovim C/C++ Setup
 
-一套可重复部署的 Neovim 配置，采用用户级安装，不需要覆盖系统自带的 Vim/Neovim。
+A reproducible, user-level Neovim configuration for C and C++ development. It installs without replacing a system-provided Vim or Neovim.
 
-## 包含内容
+## Features
 
-- 最新稳定版 Neovim，安装到 `~/.local/opt/nvim`
-- `lazy.nvim` 插件管理
-- `neo-tree.nvim` 文件树
-- Treesitter C/C++ 语法高亮
-- clangd 代码导航、诊断和重构
-- nvim-cmp 自动补全
-- clang-format 保存时格式化
-- nvim-dap、nvim-dap-ui 和 codelldb 调试
-- Nerd Symbols 字体回退，修复终端图标
+- Latest stable Neovim installed under `~/.local/opt/nvim`
+- Plugin management with `lazy.nvim`
+- File explorer with `neo-tree.nvim`
+- C/C++ syntax highlighting with Treesitter
+- Code navigation, diagnostics, and refactoring with clangd
+- Completion with nvim-cmp
+- Format-on-save with clang-format
+- Debugging with nvim-dap, nvim-dap-ui, and codelldb
+- Nerd Symbols font fallback for terminal icons
 
-## 一键安装
+## Supported systems
 
-支持 Linux x86_64 和 ARM64。脚本会在缺少基础依赖时尝试通过 `apt`、`dnf` 或 `pacman` 安装；这时系统可能要求输入 sudo 密码。
+The installer supports Linux on x86_64 and ARM64. If required dependencies are missing, it can install them with `apt`, `dnf`, or `pacman`; in that case, you may be prompted for your sudo password.
+
+Required tools:
 
 ```text
 curl git tar unzip cc python3 python3-pip fontconfig
 ```
 
-克隆仓库后运行：
+## Installation
+
+Clone the repository to any directory and run the installer:
 
 ```bash
-git clone https://github.com/你的用户名/nvim-config.git ~/lsy/nvim-config
-cd ~/lsy/nvim-config
+git clone https://github.com/shareu007/nvim-config.git
+cd nvim-config
 ./install.sh
 ```
 
-脚本会下载 Neovim、字体、插件和 C/C++ 工具。已有 Neovim 或配置会先备份为带时间戳的目录。重复运行脚本可以更新或修复安装。
+The script installs Neovim, fonts, plugins, clangd, clang-format, and codelldb. Existing Neovim installations and configuration directories are moved to timestamped backups before replacement.
 
-安装结束后重新打开终端，再运行：
+After installation, open a new terminal and run:
 
 ```bash
 nvim
 ```
 
-## 常用快捷键
+Re-run `./install.sh` at any time to update or repair the installation.
 
-| 快捷键 | 功能 |
+## Key mappings
+
+| Key | Action |
 |---|---|
-| `Space e` | 显示/隐藏文件树 |
-| `Ctrl-h/j/k/l` | 在文件树和各分屏间移动 |
-| `Enter` | 在文件树中打开文件 |
-| `gd` | 跳转到定义 |
-| `gr` | 查找引用 |
-| `K` | 查看悬浮文档 |
-| `Space rn` | 重命名符号 |
-| `Space ca` | 代码操作 |
-| `Space f` | 格式化当前文件 |
-| `Space db` | 切换断点 |
-| `F5` | 启动或继续调试 |
-| `F10/F11/F12` | 越过/进入/跳出 |
+| `Space e` | Toggle the file explorer |
+| `Ctrl-h/j/k/l` | Move between the file explorer and editor splits |
+| `Enter` | Open the selected file in Neo-tree |
+| `gd` | Go to definition |
+| `gr` | Find references |
+| `K` | Show hover documentation |
+| `Space rn` | Rename a symbol |
+| `Space ca` | Show code actions |
+| `Space f` | Format the current file |
+| `Space db` | Toggle a breakpoint |
+| `F5` | Start or continue debugging |
+| `F10/F11/F12` | Step over, step into, or step out |
 
-## 配置文件
+## Repository layout
 
-- `nvim/init.lua`：Neovim 和插件配置
-- `nvim/lazy-lock.json`：插件版本锁文件
-- `install.sh`：一键安装和更新脚本
+- `nvim/init.lua` — Neovim and plugin configuration
+- `nvim/lazy-lock.json` — pinned plugin revisions
+- `install.sh` — idempotent installation and update script
 
-修改配置后，可以重新执行 `./install.sh` 部署到当前用户目录。
+Neovim, fonts, plugins, and development tools are installed in the current user's home directory. The installer only invokes sudo when system-level prerequisites are missing.
 
-Neovim、字体、插件和开发工具均安装在当前用户目录中；只有缺少上述系统基础依赖时才会调用 sudo。
+## Updating this configuration
 
-## 上传到 GitHub
-
-在 GitHub 新建一个空仓库，然后执行：
+Edit the files under `nvim/`, commit your changes, and run:
 
 ```bash
-cd ~/lsy/nvim-config
-git add .
-git commit -m "Add portable Neovim C development setup"
-git remote add origin https://github.com/你的用户名/nvim-config.git
-git push -u origin main
+./install.sh
 ```
 
+This deploys the repository configuration to `~/.config/nvim`.
